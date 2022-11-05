@@ -12,5 +12,5 @@ Mimic chromium's HTTP/HTTP2 and TLS implementations.
 ### Installation
 
 ```sh
-go get github.com/saucesteals/mimic
+go get github.com/miromiro11/mimic
 ```
