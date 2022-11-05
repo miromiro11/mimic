@@ -19,7 +19,7 @@ func getMajor(version string) (string, int, error) {
 	return major, iMajor, err
 }
 
-func Chromium(brand Brand, version string) (*ClientSpec, error) {
+func Chromium(brand Brand, version string, Ja3 string) (*ClientSpec, error) {
 
 	major, iMajor, err := getMajor(version)
 
@@ -27,8 +27,38 @@ func Chromium(brand Brand, version string) (*ClientSpec, error) {
 		return nil, err
 	}
 
-	switch {
-	case iMajor >= 100:
+	if Ja3 != "" {
+		tlsHello,err := MatchJa3String(Ja3)
+		if err != nil {
+			return nil, err
+		}
+		return &ClientSpec{
+			version:      version,
+			clientHintUA: clientHintUA(iMajor, brand, major, version),
+			h2Options: &http2Options{
+				Settings: []http2.Setting{
+					{ID: http2.SettingEnablePush, Val: 1},
+					{ID: http2.SettingMaxConcurrentStreams, Val: 100},
+					{ID: http2.SettingInitialWindowSize, Val: 65535},
+					{ID: http2.SettingMaxFrameSize, Val: 16384},
+					{ID: http2.SettingMaxHeaderListSize, Val: 65536},
+				},
+				PseudoHeaderOrder: []string{
+					":authority",
+					":method",
+					":path",
+					":scheme",
+					":status",
+				},
+				MaxHeaderListSize: 65536,
+				InitialWindowSize: 65535,
+				HeaderTableSize:   4096,
+			},
+			getTlsSpec: func() *utls.ClientHelloSpec {
+				return &tlsHello
+			},
+		}, nil
+	}else if iMajor >= 100{
 		return &ClientSpec{
 			version,
 			clientHintUA(iMajor, brand, major, version),
@@ -122,7 +152,6 @@ func Chromium(brand Brand, version string) (*ClientSpec, error) {
 				}
 			},
 		}, nil
-	}
-
+		}
 	return nil, ErrUnsupportedVersion
 }
