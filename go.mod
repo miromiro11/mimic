@@ -1,10 +1,10 @@
-module github.com/saucesteals/mimic
+module github.com/miromiro11/mimic
 
 go 1.18
 
 require (
 	github.com/saucesteals/fhttp v0.0.0-20220713050157-e3eea48d7785
-	github.com/saucesteals/utls v1.1.2-0.20220526033452-2e6d7376b70a
+	github.com/miromiro11/utls v1.1.2-0.20220526033452-2e6d7376b70a
 )
 
 require (
