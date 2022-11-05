@@ -44,24 +44,6 @@ func (c *ClientSpec) ConfigureTransport(t1 *http.Transport) *http.Transport {
 	return t1
 }
 
-func (c *ClientSpec) ConfigureTrasnportFromJa3(t1 *http.Transport)*http.Transport {
-	t1.GetTlsClientHelloSpec = c.getTlsSpec
-
-	t2, err := http2.ConfigureTransports(t1)
-
-	if err != nil {
-		log.Printf("error enabling Transport HTTP/2 support: %v", err)
-		return t1
-	}
-
-	t2.Settings = c.h2Options.Settings
-	t2.MaxHeaderListSize = c.h2Options.MaxHeaderListSize
-	t2.InitialWindowSize = c.h2Options.MaxHeaderListSize
-	t2.HeaderTableSize = c.h2Options.MaxHeaderListSize
-
-	return t1
-}
-
 // Version returns the version for the mimicked client..
 func (c *ClientSpec) Version() string {
 	return c.version
