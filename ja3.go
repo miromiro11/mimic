@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	utls "github.com/saucesteals/utls"
+	utls "github.com/miromiro11/utls"
 )
 
 func GenMap(curves []utls.CurveID)map[string]utls.TLSExtension{
