@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/miromiro11/fhttp/http2"
 	utls "github.com/miromiro11/utls"
-	"github.com/saucesteals/fhttp/http2"
 )
 
 var (
@@ -15,7 +15,7 @@ var (
 
 func getMajor(version string) (string, int, error) {
 	major := strings.SplitN(version, ".", 2)[0]
-	iMajor, err := strconv.Atoi(major)
+	iMajor, err := strconv.Atoi(major)	
 	return major, iMajor, err
 }
 
